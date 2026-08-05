@@ -72,6 +72,18 @@
     --sombra-violeta: 0 0 40px rgba(168, 85, 247, 0.4),0 24px 48px rgba(0,0,0,0.5);
     --sombra-card: 0 0 32px rgba(91, 0, 175, 0.2),0 16px 32px rgba(0,0,0,0.4);
 
+/* --- Transiçoes ---*/
+--transsicao-rapida: 0.2s cubic-bezier(0.4,0,0.2,1);
+--transicao-padrao: 0.35s cubic-bezier(0.4,0,0.2,1);
+--transicao-lenta: 0.6s cubic-bezier(0.16,1,0.3,1);
+--transicao-spring: 0.5s cubic-bezier(0.34,1.56,0.64,1);
+
+/*Tamanho da grade decorativa*/
+--grade:64px;
+
+/*nav: largura do indicador magico*/
+--nav-indicador-w:130px;
+--nav-indicador-h:44px;
 }
 
 
@@ -224,23 +236,54 @@ img, video {
    que serve de "pílula" destacando o item ativo (ou hovered).
    Cada <li> ao receber :hover "move" o indicador via CSS variables.
    ----------------------------------------------------------------------- */
-
+.topo__nav ul {
+    display: flex; /*flex dentro de flex: valido e comum*/
+    align-items: center;
+    gap: 0; /*sem gap os itens ficam lado lado*/
+    position: relative;
+    padding: 6px;
+    background: rgba(255,255,0.04);
+    border: 1px solid var(--borda);
+    border-radius: var(--raio-pill);
+}
 
 /* O indicador deslizante — feito 100% com CSS, sem JS, sem HTML extra.
    É o ::before do <ul>, posicionado absolutamente. */
-
+.topo__nav ul::before{
+    content: "";
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    height: calc(100% - 12px);
+    width: var(--nav-indicador-w);
+    border-radius: var(--raio-pill);
+    background: linear-gradient(135deg, var(--ciano)0%var(--violeta)100%);
+    box-shadow: 0 0 20px var(--ciano-glow),0 0 40px var(--violeta-glow) ;
+    transition: transform var(--transicao-spring)width var(--transicao-spring);
+    z-index: 0;
+    /*Começa na posiçao 0 ( primeiro item)*/
+    transform: translateX(0);
+}
 
 /* Quando o 1º li recebe hover, indicador vai para posição 0 */
+.topo__nav ul:has(li:nth-child(1):hover)::before{transform:translateX(0)}
 
 /* Quando o 2º li recebe hover */
+.topo__nav ul:has(li:nth-child(2):hover)::before{transform: translateX(calc(var(--nav-indicador-w)*1));}
 
 /* Quando o 3º li recebe hover */
+.topo__nav ul:has(li:nth-child(3):hover)::before{transform: translateX(calc(var(--nav-indicador-w)*2));}
 
 /* Quando o 4º li recebe hover */
+.topo__nav ul:has(li:nth-child(4):hover)::before{transform: translateX(calc(var(--nav-indicador-w)*3));}
 
 /* Quando o 5º li (Contato) recebe hover — botão separado, indicador some */
+.topo__nav ul:has(li:nth-child(5):hover)::before{transform: translateX(calc(var(--nav-indicador-w)*4));}
 
-
+.topo__nav li{
+    position: relative;
+    z-index: 1;
+}
 
 
 
